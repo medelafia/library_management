@@ -14,8 +14,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Install mvn
         run: | 
-          apt update
-          apt install maven -y
+          apt-get update
+          apt-get install maven -y
           
       - name: build target 
         run: mvn clean packaage
