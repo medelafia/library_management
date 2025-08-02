@@ -47,7 +47,13 @@ jobs:
       - name: connect with instance
         uses : appleboy/ssh-action@v1
         with : 
-          host : ${{secrets.host}} 
-          username : ${{secrets.username}} 
-          
+          host : ${{secrets.HOST}} 
+          username : ${{secrets.USERNAME}} 
+          key : ${{secrets.KEY}} 
+          scripts : | 
+            docker pull ${{secrets.DOCKER_REGISTRY}}/library_management:latest
+            docker stop library_container
+            docker rm library_container
+            docker run -p 8080:8080 -d --name library_container ${{secrets.DOCKER_REGISTRY}}/library_management:latest
+            
     
