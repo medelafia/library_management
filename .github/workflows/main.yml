@@ -1,0 +1,53 @@
+name : Deploy Library Api 
+
+on:
+  push: 
+    branches: [main] 
+
+
+
+jobs: 
+  build: 
+    runs-on: ubuntu-latest 
+    steps :  
+      - name: Setup repo 
+        uses: actions/checkout@v4
+      - name: Install mvn
+        run: | 
+          apt update
+          apt install maven -y
+          
+      - name: build target 
+        run: mvn clean packaage
+      
+      - name: install aws 
+        run: |  
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          apt install unzip 
+          unzip awscliv2.zip
+          sudo ./aws/install 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.SECRET_KEY }}
+          aws-region: ${{ secrets.REGION }}
+      - name: authenticate with ecr
+        run: |
+          aws ecr get-login-password --region eu-north-1 | \ 
+          docker login --username AWS --password-stdin ${{secrets.DOCKER_REGISTRY}}
+      - name : build image
+        run: | 
+          docker build -t library_management:latest . 
+          docker tag library_management:latest ${{secrets.DOCKER_REGISTRY}}/library_management:latest
+          docker push ${{secrets.DOCKER_REGISTRY}}/library_management:latest
+  deploy : 
+    runs-on : ubuntu:latest 
+    steps: 
+      - name: connect with instance
+        uses : appleboy/ssh-action@v1
+        with : 
+          host : ${{secrets.host}} 
+          username : ${{secrets.username}} 
+          
+    
