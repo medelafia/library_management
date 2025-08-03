@@ -59,8 +59,8 @@ jobs:
             echo "pulling" 
             docker pull ${{secrets.DOCKER_REGISTRY}}/library_management:latest
             echo "pulled" 
-            docker stop library_container
-            docker rm library_container
+            docker stop library_container || true
+            docker rm library_container || true 
             docker run -p 8080:8080 -d --env-file .env --name library_container ${{secrets.DOCKER_REGISTRY}}/library_management:latest
               
     
