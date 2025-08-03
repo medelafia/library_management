@@ -53,8 +53,7 @@ jobs:
           key : ${{secrets.KEY}} 
           script : | 
             echo "Authenticating now" 
-            aws ecr get-login-password --region ${{secrets.AWS_REGION}} | \ 
-            docker login --username AWS --password-stdin ${{secrets.DOCKER_REGISTRY}}
+            aws ecr get-login-password --region ${{secrets.AWS_REGION}} | docker login --username AWS --password-stdin ${{secrets.DOCKER_REGISTRY}}
             echo "Auth success"
             echo "pulling" 
             docker pull ${{secrets.DOCKER_REGISTRY}}/library_management:latest
