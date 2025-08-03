@@ -90,5 +90,10 @@ public class BooksController {
 			return Response.status(Response.Status.EXPECTATION_FAILED).build() ;
 		}
 	}
-	
+
+	@GET
+	@Path("/works")
+	public Response getWorks() {
+		return Response.ok("CI/CD pipeline works").build();
+	}
 }
