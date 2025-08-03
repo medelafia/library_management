@@ -33,9 +33,8 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
       - name : install docker
         run : | 
-          sudo apt-get update 
-          sudo apt-get install docker.io -y 
-          sudo systemctl enable docker 
+           curl -fsSL https://get.docker.com -o get-docker.sh
+           sh get-docker.sh
       - name: authenticate with ecr
         run: |
           aws ecr get-login-password --region eu-north-1 | \ 
