@@ -51,7 +51,7 @@ jobs:
           host : ${{secrets.HOST}} 
           username : ${{secrets.USERNAME}} 
           key : ${{secrets.KEY}} 
-          scripts : | 
+          script : | 
             echo "Authenticating now" 
             aws erc get-login-password --region ${{secrets.AWS_REGION}} | \ 
             docker login --username AWS --password-stdin ${{secrets.DOCKER_REGISTRY}}
