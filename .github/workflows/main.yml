@@ -52,10 +52,13 @@ jobs:
           username : ${{secrets.USERNAME}} 
           key : ${{secrets.KEY}} 
           scripts : | 
-            echo "auth now"
+            echo "Authenticating now" 
             aws erc get-login-password --region ${{secrets.AWS_REGION}} | \ 
             docker login --username AWS --password-stdin ${{secrets.DOCKER_REGISTRY}}
+            echo "Auth success"
+            echo "pulling" 
             docker pull ${{secrets.DOCKER_REGISTRY}}/library_management:latest
+            echo "pulled" 
             docker stop library_container
             docker rm library_container
             docker run -p 8080:8080 -d --env-file .env --name library_container ${{secrets.DOCKER_REGISTRY}}/library_management:latest
