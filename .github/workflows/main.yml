@@ -42,7 +42,7 @@ jobs:
           docker tag library_management:latest ${{secrets.DOCKER_REGISTRY}}/library_management:latest
           docker push ${{secrets.DOCKER_REGISTRY}}/library_management:latest
   deploy : 
-    runs-on : ubuntu:latest 
+    runs-on : ubuntu-latest 
     needs : build
     steps: 
       - name: connect with instance
