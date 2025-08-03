@@ -36,9 +36,9 @@ jobs:
            curl -fsSL https://get.docker.com -o get-docker.sh
            sh get-docker.sh
       - name: authenticate with ecr
-        run: |
-          aws ecr get-login-password --region eu-north-1 | \ 
-          docker login --username AWS --password-stdin ${{secrets.DOCKER_REGISTRY}}
+        id : login-ecr
+        uses :  aws-actions/amazon-ecr-login@v2
+        
       - name : build image
         run: | 
           docker build -t library_management:latest . 
