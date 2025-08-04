@@ -91,9 +91,4 @@ public class BooksController {
 		}
 	}
 
-	@GET
-	@Path("/works")
-	public Response getWorks() {
-		return Response.ok("CI/CD pipeline works").build();
-	}
 }
