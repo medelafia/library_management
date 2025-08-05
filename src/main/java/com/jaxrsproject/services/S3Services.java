@@ -3,6 +3,7 @@ package com.jaxrsproject.services;
 
 import com.jaxrsproject.entities.Book;
 import com.jaxrsproject.utils.S3utils;
+import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.model.*;
 
@@ -28,12 +29,15 @@ public class S3Services {
                         RequestBody.fromBytes(inputStream.readAllBytes())
                 ) ;
 
-        String coverUrl =  String.format("https://%s.s3.amazonaws.com/%s" ,this.bucketName , fileName) ;
+        String coverUrl =  String.format("http://%s:%s/api/cover/%s" ,System.getenv("IP_ADDRESS") , System.getenv("PORT"), fileName) ;
         Book book = this.bookServices.getBookById(isbn) ;
         book.setCoverUrl(coverUrl);
         this.bookServices.updateBook(book) ;
 
         return coverUrl ;
+    }
+    public ResponseInputStream<GetObjectResponse> getImage(String key) {
+        return  S3utils.getS3Client().getObject(builder -> builder.bucket(this.bucketName).key(key).build()) ;
     }
     public boolean bucketCreated() {
         try {

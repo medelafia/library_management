@@ -15,10 +15,8 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.SecurityContext;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
-
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -84,11 +82,16 @@ public class BooksController {
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response uploadCover(@FormDataParam("cover")InputStream inputStream , @FormDataParam("cover")FormDataContentDisposition  formDataContentDisposition , @PathParam("isbn") String isbn ) {
 		try {
-			s3Services.uploadImage(isbn, inputStream, formDataContentDisposition.getFileName());
-			return Response.ok().build();
+			return Response.ok(s3Services.uploadImage(isbn, inputStream, formDataContentDisposition.getFileName())).build();
 		}catch (IOException ioException) {
 			return Response.status(Response.Status.EXPECTATION_FAILED).build() ;
 		}
+	}
+	@GET
+	@Path("cover/{key}")
+	@Produces({"image/png", "image/jpeg", "image/webp"})
+	public Response getCover(@PathParam("key") String key) throws IOException {
+		return Response.ok(this.s3Services.getImage(key).readAllBytes()).build()  ;
 	}
 
 }
