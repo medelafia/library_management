@@ -29,7 +29,7 @@ public class S3Services {
                         RequestBody.fromBytes(inputStream.readAllBytes())
                 ) ;
 
-        String coverUrl =  String.format("http://%s:%s/api/cover/%s" ,System.getenv("IP_ADDRESS") , System.getenv("PORT"), fileName) ;
+        String coverUrl =  String.format("http://%s:%s/app/books/cover/%s" ,System.getenv("IP_ADDRESS") , System.getenv("PORT"), fileName) ;
         Book book = this.bookServices.getBookById(isbn) ;
         book.setCoverUrl(coverUrl);
         this.bookServices.updateBook(book) ;
