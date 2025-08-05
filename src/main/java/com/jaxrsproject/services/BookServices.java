@@ -41,7 +41,7 @@ public class BookServices {
 	public Book updateBook(Book book ) {
 		Book savedBook = this.bookRepository.getBookById(book.getISBN()) ;
 		if( savedBook != null) {
-			book.setCoverUrl(savedBook.getCoverUrl()) ;
+			savedBook.setCoverUrl(book.getCoverUrl()) ;
 			return bookRepository.updateBook(book) ;
 		}
 		return null  ;
